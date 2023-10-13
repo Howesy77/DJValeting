@@ -14,7 +14,7 @@
         <th>Email</th>
         <th>Vehicle Size</th>
         <th>Flexibility</th>
-        <th></th>
+        <th colspan="2"></th>
     </tr>
     </thead>
 
@@ -28,6 +28,14 @@
             <td>@Html.DisplayFor(m => booking.Email)</td>
             <td>@Html.DisplayFor(m => booking.VehicleSize)</td>
             <td>@Html.DisplayFor(m => booking.Flexibility)</td>
+            <td>
+                <form asp-controller="Admin" asp-action="ChangeApproval" asp-route-id="@booking.Id" method="post">
+                    @Html.AntiForgeryToken()
+                    <button class="btn btn-@(booking.IsApproved ? "warning" : "success")" style="min-width: 100px" type="submit">
+                        @(booking.IsApproved ? "Reject" : "Approve")
+                    </button>
+                </form>
+            </td>
             <td>
                 <a class="btn btn-secondary" asp-action="Edit" asp-route-id="@booking.Id">
                     Edit

@@ -46,21 +46,7 @@ namespace SixB.CarValeting.Web.Controllers
         {
             try
             {
-                var result = await _mediator.Send(new GetBookingByIdQuery { Id = id });
-
-                var command = new EditBookingCommand
-                {
-                    Id = id,
-                    Name = result.Booking.Name,
-                    Date = result.Booking.Date,
-                    VehicleSize = result.Booking.VehicleSize,
-                    Flexibility = result.Booking.Flexibility,
-                    Email = result.Booking.Email,
-                    IsApproved = result.Booking.IsApproved,
-                    PhoneNumber = result.Booking.PhoneNumber
-                };
-
-                return View(command);
+                return View(await GetById(id));
             }
             catch (Exception e)
             {
@@ -86,6 +72,25 @@ namespace SixB.CarValeting.Web.Controllers
             {
                 _logger.LogError(e, e.Message);
                 return View(command);
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangeApproval(int id)
+        {
+            try
+            {
+                var command = await GetById(id);
+                command.IsApproved = !command.IsApproved;
+
+                await _mediator.Send(command);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, e.Message);
             }
 
             return RedirectToAction("Index");
@@ -137,6 +142,23 @@ namespace SixB.CarValeting.Web.Controllers
             await HttpContext.SignOutAsync();
 
             return RedirectToAction("Index", "Home");
+        }
+
+        private async Task<EditBookingCommand> GetById(int id)
+        {
+            var result = await _mediator.Send(new GetBookingByIdQuery { Id = id });
+
+            return new EditBookingCommand
+            {
+                Id = id,
+                Name = result.Booking.Name,
+                Date = result.Booking.Date,
+                VehicleSize = result.Booking.VehicleSize,
+                Flexibility = result.Booking.Flexibility,
+                Email = result.Booking.Email,
+                IsApproved = result.Booking.IsApproved,
+                PhoneNumber = result.Booking.PhoneNumber
+            };
         }
     }
 }
