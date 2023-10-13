@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using SixB.CarValeting.Application.Commands.CreateBooking;
 
 namespace SixB.CarValeting.Web.Controllers
 {
@@ -20,6 +21,28 @@ namespace SixB.CarValeting.Web.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Index(CreateBookingCommand command)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(command);
+            }
+
+            try
+            {
+                await _mediator.Send(command);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, e.Message);
+                return View(command);
+            }
+
+            return View("Success");
         }
     }
 }
