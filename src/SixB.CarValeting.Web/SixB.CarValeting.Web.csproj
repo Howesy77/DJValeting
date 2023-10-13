@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SixB.CarValeting.Data\SixB.CarValeting.Data.csproj" />
+    <ProjectReference Include="..\SixB.CarValeting.Application\SixB.CarValeting.Application.csproj" />
   </ItemGroup>
 
 </Project>
