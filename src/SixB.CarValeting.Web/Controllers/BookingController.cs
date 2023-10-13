@@ -23,6 +23,12 @@ namespace SixB.CarValeting.Web.Controllers
             return View();
         }
 
+        [HttpGet]
+        public IActionResult Success()
+        {
+            return View();
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Index(CreateBookingCommand command)
@@ -39,6 +45,8 @@ namespace SixB.CarValeting.Web.Controllers
             catch (Exception e)
             {
                 _logger.LogError(e, e.Message);
+
+                ModelState.AddModelError("", "Failed to create booking");
                 return View(command);
             }
 

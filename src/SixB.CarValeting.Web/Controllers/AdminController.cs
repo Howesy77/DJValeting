@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SixB.CarValeting.Application.Commands.CreateBooking;
 using SixB.CarValeting.Application.Commands.DeleteBooking;
 using SixB.CarValeting.Application.Commands.EditBooking;
 using SixB.CarValeting.Application.Commands.UserLogin;
@@ -72,6 +73,8 @@ namespace SixB.CarValeting.Web.Controllers
             catch (Exception e)
             {
                 _logger.LogError(e, e.Message);
+
+                ModelState.AddModelError("", "Failed to edit booking");
                 return View(command);
             }
 
@@ -80,11 +83,11 @@ namespace SixB.CarValeting.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(int Id)
+        public async Task<IActionResult> Delete(int id)
         {
             try
             {
-                await _mediator.Send(new DeleteBookingCommand { Id = Id });
+                await _mediator.Send(new DeleteBookingCommand { Id = id });
             }
             catch (Exception e)
             {
@@ -113,6 +116,36 @@ namespace SixB.CarValeting.Web.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(CreateBookingCommand command)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(command);
+            }
+
+            try
+            {
+                await _mediator.Send(command);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, e.Message);
+
+                ModelState.AddModelError("", "Failed to create booking");
+                return View(command);
+            }
+
+            return RedirectToAction("Index");
+        }
+
         [AllowAnonymous]
         [HttpGet]
         public IActionResult Login()
@@ -133,7 +166,12 @@ namespace SixB.CarValeting.Web.Controllers
             try
             {
                 var result = await _mediator.Send(command);
-                if (!result.IsLoggedIn) return View(command);
+
+                if (!result.IsLoggedIn)
+                {
+                    ModelState.AddModelError("", "Failed to login");
+                    return View(command);
+                }
 
                 var claimsIdentity = new ClaimsIdentity(
                     new[]
@@ -149,6 +187,7 @@ namespace SixB.CarValeting.Web.Controllers
             catch (Exception e)
             {
                 _logger.LogError(e, e.Message);
+                ModelState.AddModelError("", "Failed to login");
                 return View(command);
             }
         }

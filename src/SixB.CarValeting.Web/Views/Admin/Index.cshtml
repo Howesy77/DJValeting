@@ -3,6 +3,10 @@
     ViewData["Title"] = "Current bookings";
 }
 
+<a class="btn btn-success" asp-action="Create">
+    Create booking
+</a>
+
 @if (Model.Bookings.Count == 0)
 {
     <div class="text-center">
