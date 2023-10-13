@@ -1,4 +1,4 @@
-﻿using SixB.CarValeting.Data.Enums;
+﻿using SixB.CarValeting.Infrastructure.Enums;
 
 namespace SixB.CarValeting.Data.Entities
 {

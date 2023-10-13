@@ -1,4 +1,4 @@
-﻿namespace SixB.CarValeting.Data.Enums
+﻿namespace SixB.CarValeting.Infrastructure.Enums
 {
     public enum Flexibility
     {

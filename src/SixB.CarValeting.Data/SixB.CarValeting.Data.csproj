@@ -15,4 +15,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SixB.CarValeting.Infrastructure\SixB.CarValeting.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

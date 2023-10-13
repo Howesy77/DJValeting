@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SixB.CarValeting.Application\SixB.CarValeting.Application.csproj" />
+    <ProjectReference Include="..\SixB.CarValeting.Infrastructure\SixB.CarValeting.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

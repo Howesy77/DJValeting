@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using SixB.CarValeting.Application.Commands.CreateBooking;
 using SixB.CarValeting.Data.Database;
-using SixB.CarValeting.Data.Enums;
+using SixB.CarValeting.Infrastructure.Enums;
 
 namespace SixB.CarValeting.Application.Tests.Commands
 {

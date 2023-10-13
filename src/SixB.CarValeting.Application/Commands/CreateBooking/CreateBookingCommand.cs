@@ -1,5 +1,5 @@
 using MediatR;
-using SixB.CarValeting.Data.Enums;
+using SixB.CarValeting.Infrastructure.Enums;
 
 namespace SixB.CarValeting.Application.Commands.CreateBooking
 {
