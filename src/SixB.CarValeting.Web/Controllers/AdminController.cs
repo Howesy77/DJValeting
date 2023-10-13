@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SixB.CarValeting.Application.Commands.UserLogin;
+using SixB.CarValeting.Application.Queries.GetAllBookings;
 
 namespace SixB.CarValeting.Web.Controllers
 {
@@ -25,7 +26,17 @@ namespace SixB.CarValeting.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            return View();
+            try
+            {
+                var result = await _mediator.Send(new GetAllBookingsQuery());
+
+                return View(result);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, e.Message);
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         [AllowAnonymous]

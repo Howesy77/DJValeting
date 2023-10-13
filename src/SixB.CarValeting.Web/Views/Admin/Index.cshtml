@@ -1,1 +1,33 @@
-﻿@{ ViewData["Title"] = "Current bookings"; }
+﻿@model SixB.CarValeting.Application.Queries.GetAllBookings.GetAllBookingsQueryResult;
+@{
+    ViewData["Title"] = "Current bookings";
+}
+
+<h1 class="display-4">Current bookings</h1>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Date</th>
+        <th>Contact</th>
+        <th>Email</th>
+        <th>Vehicle Size</th>
+        <th>Flexibility</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    @foreach (var booking in Model.Bookings)
+    {
+        <tr class="@(booking.IsApproved ? "table-success" : "")">
+            <td>@Html.DisplayFor(m => booking.Name)</td>
+            <td>@booking.Date.ToShortDateString()</td>
+            <td>@Html.DisplayFor(m => booking.PhoneNumber)</td>
+            <td>@Html.DisplayFor(m => booking.Email)</td>
+            <td>@Html.DisplayFor(m => booking.VehicleSize)</td>
+            <td>@Html.DisplayFor(m => booking.Flexibility)</td>
+        </tr>
+    }
+    </tbody>
+</table>
