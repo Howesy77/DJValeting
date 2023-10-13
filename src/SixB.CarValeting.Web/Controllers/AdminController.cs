@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SixB.CarValeting.Application.Commands.DeleteBooking;
 using SixB.CarValeting.Application.Commands.EditBooking;
 using SixB.CarValeting.Application.Commands.UserLogin;
 using SixB.CarValeting.Application.Queries.GetAllBookings;
@@ -72,6 +73,22 @@ namespace SixB.CarValeting.Web.Controllers
             {
                 _logger.LogError(e, e.Message);
                 return View(command);
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int Id)
+        {
+            try
+            {
+                await _mediator.Send(new DeleteBookingCommand { Id = Id });
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, e.Message);
             }
 
             return RedirectToAction("Index");

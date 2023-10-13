@@ -3,45 +3,62 @@
     ViewData["Title"] = "Current bookings";
 }
 
-<h1 class="display-4">Current bookings</h1>
+@if (Model.Bookings.Count == 0)
+{
+    <div class="text-center">
+        <h1 class="display-4">No bookings found!</h1>
+    </div>        
+}
+else
+{
+    <h1 class="display-4">Current bookings</h1>
 
-<table class="table table-striped">
-    <thead>
-    <tr>
-        <th>Name</th>
-        <th>Date</th>
-        <th>Contact</th>
-        <th>Email</th>
-        <th>Vehicle Size</th>
-        <th>Flexibility</th>
-        <th colspan="2"></th>
-    </tr>
-    </thead>
-
-    <tbody>
-    @foreach (var booking in Model.Bookings)
-    {
-        <tr class="@(booking.IsApproved ? "table-success" : "")">
-            <td>@Html.DisplayFor(m => booking.Name)</td>
-            <td>@booking.Date.ToShortDateString()</td>
-            <td>@Html.DisplayFor(m => booking.PhoneNumber)</td>
-            <td>@Html.DisplayFor(m => booking.Email)</td>
-            <td>@Html.DisplayFor(m => booking.VehicleSize)</td>
-            <td>@Html.DisplayFor(m => booking.Flexibility)</td>
-            <td>
-                <form asp-controller="Admin" asp-action="ChangeApproval" asp-route-id="@booking.Id" method="post">
-                    @Html.AntiForgeryToken()
-                    <button class="btn btn-@(booking.IsApproved ? "warning" : "success")" style="min-width: 100px" type="submit">
-                        @(booking.IsApproved ? "Reject" : "Approve")
-                    </button>
-                </form>
-            </td>
-            <td>
-                <a class="btn btn-secondary" asp-action="Edit" asp-route-id="@booking.Id">
-                    Edit
-                </a>
-            </td>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Date</th>
+            <th>Contact</th>
+            <th>Email</th>
+            <th>Vehicle Size</th>
+            <th>Flexibility</th>
+            <th colspan="3"></th>
         </tr>
-    }
-    </tbody>
-</table>
+        </thead>
+
+        <tbody>
+        @foreach (var booking in Model.Bookings)
+        {
+            <tr class="@(booking.IsApproved ? "table-success" : "")">
+                <td>@Html.DisplayFor(m => booking.Name)</td>
+                <td>@booking.Date.ToShortDateString()</td>
+                <td>@Html.DisplayFor(m => booking.PhoneNumber)</td>
+                <td>@Html.DisplayFor(m => booking.Email)</td>
+                <td>@Html.DisplayFor(m => booking.VehicleSize)</td>
+                <td>@Html.DisplayFor(m => booking.Flexibility)</td>
+                <td>
+                    <form asp-controller="Admin" asp-action="ChangeApproval" asp-route-id="@booking.Id" method="post">
+                        @Html.AntiForgeryToken()
+                        <button class="btn btn-@(booking.IsApproved ? "warning" : "success")" style="min-width: 100px" type="submit">
+                            @(booking.IsApproved ? "Reject" : "Approve")
+                        </button>
+                    </form>
+                </td>
+                <td>
+                    <a class="btn btn-secondary" asp-action="Edit" asp-route-id="@booking.Id">
+                        Edit
+                    </a>
+                </td>
+                <td>
+                    <form asp-controller="Admin" asp-action="Delete" asp-route-id="@booking.Id" method="post">
+                        @Html.AntiForgeryToken()
+                        <button class="btn btn-danger" type="submit">
+                            Delete
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
