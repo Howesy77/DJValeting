@@ -1,7 +1,11 @@
+using Microsoft.EntityFrameworkCore;
+using SixB.CarValeting.Data.Database;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<CarValetingContext>(opts => opts.UseSqlServer(builder.Configuration.GetConnectionString("CarValeting")));
 
 var app = builder.Build();
 
