@@ -1,0 +1,49 @@
+﻿@model SixB.CarValeting.Application.Commands.EditBooking.EditBookingCommand;
+@{ ViewData["Title"] = "Edit booking"; }
+
+<h1 class="display-4">Edit booking</h1>
+
+<form asp-controller="Admin" asp-action="Edit" method="post">
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.Id)
+    @Html.HiddenFor(m => m.IsApproved)
+
+    <div class="mb-3">
+        <label class="form-label" asp-for="Name"></label>
+        <input class="form-control" asp-for="Name"/>
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label" asp-for="Date"></label>
+        <input class="form-control" asp-for="Date" type="date"/>
+        <span asp-validation-for="Date" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label" asp-for="Flexibility"></label>
+        <select class="form-control" asp-for="Flexibility" asp-items="Html.GetEnumSelectList<SixB.CarValeting.Infrastructure.Enums.Flexibility>()"></select>
+        <span asp-validation-for="Flexibility" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label" asp-for="VehicleSize"></label>
+        <select class="form-control" asp-for="VehicleSize" asp-items="Html.GetEnumSelectList<SixB.CarValeting.Infrastructure.Enums.VehicleSize>()"></select>
+        <span asp-validation-for="VehicleSize" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label" asp-for="PhoneNumber"></label>
+        <input class="form-control" asp-for="PhoneNumber"/>
+        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label" asp-for="Email"></label>
+        <input class="form-control" asp-for="Email" type="email"/>
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-success">Submit</button>
+    <a class="btn btn-secondary" asp-action="Index">Cancel</a>
+</form>

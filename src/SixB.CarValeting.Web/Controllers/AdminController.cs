@@ -4,8 +4,10 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SixB.CarValeting.Application.Commands.EditBooking;
 using SixB.CarValeting.Application.Commands.UserLogin;
 using SixB.CarValeting.Application.Queries.GetAllBookings;
+using SixB.CarValeting.Application.Queries.GetBookingById;
 
 namespace SixB.CarValeting.Web.Controllers
 {
@@ -37,6 +39,56 @@ namespace SixB.CarValeting.Web.Controllers
                 _logger.LogError(e, e.Message);
                 return RedirectToAction("Index", "Home");
             }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            try
+            {
+                var result = await _mediator.Send(new GetBookingByIdQuery { Id = id });
+
+                var command = new EditBookingCommand
+                {
+                    Id = id,
+                    Name = result.Booking.Name,
+                    Date = result.Booking.Date,
+                    VehicleSize = result.Booking.VehicleSize,
+                    Flexibility = result.Booking.Flexibility,
+                    Email = result.Booking.Email,
+                    IsApproved = result.Booking.IsApproved,
+                    PhoneNumber = result.Booking.PhoneNumber
+                };
+
+                return View(command);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, e.Message);
+                return RedirectToAction("Index");
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(EditBookingCommand command)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(command);
+            }
+
+            try
+            {
+                await _mediator.Send(command);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, e.Message);
+                return View(command);
+            }
+
+            return RedirectToAction("Index");
         }
 
         [AllowAnonymous]
