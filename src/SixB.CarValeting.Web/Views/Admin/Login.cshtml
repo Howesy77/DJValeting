@@ -1,0 +1,22 @@
+﻿@model SixB.CarValeting.Application.Commands.UserLogin.UserLoginCommand;
+@{ ViewData["Title"] = "Login"; }
+
+<h1 class="display-4">Login to Admin area</h1>
+
+<form asp-controller="Admin" asp-action="Login" method="post">
+    @Html.AntiForgeryToken()
+        
+    <div class="mb-3">
+        <label class="form-label" asp-for="Username"></label>
+        <input class="form-control" asp-for="Username" type="email"/>
+        <span asp-validation-for="Username" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label" asp-for="Password"></label>
+        <input class="form-control" asp-for="Password" type="password" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
